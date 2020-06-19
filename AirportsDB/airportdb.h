@@ -3,6 +3,10 @@
 
 #include <QObject>
 #include <QList>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QFile>
 
 #include "airport.h"
 
@@ -12,8 +16,11 @@ class AirportDB : public QObject
 public:
     explicit AirportDB(QObject *parent = nullptr);
 
-    void addAirport(Airport airport);
+    bool addAirport(Airport airport);
     QList<Airport> getAirports();
+
+    void loadDb();
+    void saveDb();
 
 signals:
     void OnDbUpdated();

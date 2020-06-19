@@ -25,7 +25,7 @@ void MainWindow::on_actionExit_triggered()
 
 void MainWindow::on_actionAddAirport_triggered()
 {
-    AirportDialog* airportDialog = new AirportDialog(this);
+    AirportDialog* airportDialog = new AirportDialog(this, AirportDialog::eModes::AddAirport, nullptr);
     airportDialog->exec();
 }
 

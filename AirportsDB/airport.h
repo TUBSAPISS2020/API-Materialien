@@ -2,6 +2,7 @@
 #define AIRPORT_H
 
 #include <QString>
+#include <QJsonObject>
 
 class Airport
 {
@@ -15,6 +16,11 @@ public:
 
 public:
     Airport();
+    Airport(QJsonObject jsonObject);
+
+    bool operator==(const Airport& other);
+
+    QJsonObject toJsonObject();
 
     QString mICAO;
     QString mName;
