@@ -25,7 +25,17 @@ private slots:
 
     void on_actionAddAirport_triggered();
 
+    void on_ShowContextMenu(const QPoint &pos);
+
+    void on_deleteAirport();
+    void on_editAirport();
+
+    void on_tblAirports_cellDoubleClicked(int row, int column);
+
 private:
     Ui::MainWindow *ui;
+
+    const Airport* getAirportFromContextMenuAction();
+    const Airport* getAirportByTblRowIndex(int row);
 };
 #endif // MAINWINDOW_H

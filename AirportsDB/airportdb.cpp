@@ -16,8 +16,49 @@ bool AirportDB::addAirport(Airport airport) {
     }
 }
 
+bool AirportDB::deleteAirport(Airport airport) {
+    int index = mAirports.indexOf(airport);
+    if (index >= 0) {
+        mAirports.removeAt(index);
+        saveDb();
+        emit OnDbUpdated();
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool AirportDB::editAirport(Airport airportOld, Airport airportNew) {
+    int index = mAirports.indexOf(airportOld);
+    if (index >= 0) {
+        mAirports.replace(index, airportNew);
+        saveDb();
+        emit OnDbUpdated();
+        return true;
+    } else {
+        return false;
+    }
+}
+
 QList<Airport> AirportDB::getAirports() {
     return mAirports;
+}
+
+const Airport* AirportDB::getAirport(QString sICAO) {
+    int index = -1;
+
+    for (int i = 0; i < mAirports.size(); i++) {
+        if (mAirports.at(i).mICAO == sICAO) {
+            index = i;
+            break;
+        }
+    }
+
+    if (index < 0) {
+        return nullptr;
+    } else {
+        return &(mAirports.at(index));
+    }
 }
 
 void AirportDB::loadDb() {

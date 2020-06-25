@@ -17,7 +17,11 @@ public:
     explicit AirportDB(QObject *parent = nullptr);
 
     bool addAirport(Airport airport);
+    bool deleteAirport(Airport airport);
+    bool editAirport(Airport airportOld, Airport airportNew);
+
     QList<Airport> getAirports();
+    const Airport* getAirport(QString sICAO);
 
     void loadDb();
     void saveDb();

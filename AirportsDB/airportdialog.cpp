@@ -8,10 +8,11 @@ AirportDialog::AirportDialog(QWidget *parent) :
     ui->setupUi(this);
 }
 
-AirportDialog::AirportDialog(QWidget *parent, eModes mode, Airport* airport) :
+AirportDialog::AirportDialog(QWidget *parent, eModes mode, const Airport* airport) :
     AirportDialog(parent)
 {
     if (airport != nullptr) {
+        mOriginalAirport = airport;
         ui->txtICAO->setText(airport->mICAO);
         ui->txtName->setText(airport->mName);
         ui->sbAltitude->setValue(airport->mAltitude);
@@ -22,6 +23,7 @@ AirportDialog::AirportDialog(QWidget *parent, eModes mode, Airport* airport) :
         ui->cbRwySurface->setCurrentIndex(airport->mRwySurface);
     }
 
+    mMode = mode;
     switch (mode) {
     case eModes::AddAirport:
     case eModes::EditAirport:
@@ -33,6 +35,14 @@ AirportDialog::AirportDialog(QWidget *parent, eModes mode, Airport* airport) :
         ui->buttonBox->button(QDialogButtonBox::Save)->setVisible(false);
         ui->buttonBox->button(QDialogButtonBox::Cancel)->setVisible(false);
         ui->buttonBox->button(QDialogButtonBox::Close)->setVisible(true);
+
+        ui->txtICAO->setEnabled(false);
+        ui->txtName->setEnabled(false);
+        ui->sbAltitude->setEnabled(false);
+        ui->sbFrequency->setEnabled(false);
+        ui->txtRwyIdent->setEnabled(false);
+        ui->sbRwyLength->setEnabled(false);
+        ui->cbRwySurface->setEnabled(false);
         break;
     }
 }
@@ -61,12 +71,18 @@ void AirportDialog::on_buttonBox_accepted()
         return;
     }
 
-    if (Data::airportDb.addAirport(airport)) {
-        this->close();
+    if (mMode == eModes::AddAirport) {
+        if (Data::airportDb.addAirport(airport)) {
+            this->close();
+        } else {
+            QMessageBox msgBox;
+            msgBox.setText("Flugplatz mit angegebenem ICAO Code schon vorhanden.");
+            msgBox.exec();
+        }
     } else {
-        QMessageBox msgBox;
-        msgBox.setText("Flugplatz mit angegebenem ICAO Code schon vorhanden.");
-        msgBox.exec();
+        if (Data::airportDb.editAirport(*mOriginalAirport, airport)) {
+            this->close();
+        }
     }
 }
 

@@ -24,7 +24,7 @@ public:
 
 public:
     explicit AirportDialog(QWidget *parent = nullptr);
-    AirportDialog(QWidget *parent, eModes mode, Airport* airport);
+    AirportDialog(QWidget *parent, eModes mode, const Airport* airport);
     ~AirportDialog();
 
 private slots:
@@ -34,6 +34,9 @@ private slots:
 
 private:
     Ui::AirportDialog *ui;
+
+    const Airport* mOriginalAirport;
+    eModes mMode = eModes::AddAirport;
 };
 
 #endif // AIRPORTDIALOG_H
