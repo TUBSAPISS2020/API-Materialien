@@ -32,6 +32,8 @@ private slots:
 
     void on_buttonBox_rejected();
 
+    void on_dynamic_pb_clicked();
+
 private:
     Ui::AirportDialog *ui;
 };

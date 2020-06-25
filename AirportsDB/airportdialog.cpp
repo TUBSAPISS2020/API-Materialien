@@ -6,6 +6,30 @@ AirportDialog::AirportDialog(QWidget *parent) :
     ui(new Ui::AirportDialog)
 {
     ui->setupUi(this);
+
+    for (int i = 0; i < 3; i++) {
+        QPushButton* pb = new QPushButton();
+        pb->setText(QString("Button ") + QString::number(i + 1));
+        pb->setObjectName(QString("pb_test_") + QString::number(i));
+
+        QObject::connect(pb, &QPushButton::clicked, this, &AirportDialog::on_dynamic_pb_clicked);
+
+        ui->box_RWY->layout()->addWidget(pb);
+    }
+}
+
+void AirportDialog::on_dynamic_pb_clicked() {
+    QPushButton* pb = (QPushButton*) QObject::sender();
+    QString sObjName = pb->objectName();
+    int iPbID = sObjName.mid(8).toInt();
+
+    QMessageBox msgBox;
+    if (iPbID == 0) {
+        msgBox.setText("Erster Knopf gedrückt.");
+    } else {
+        msgBox.setText("Knopf mit ID: " + QString::number(iPbID));
+    }
+    msgBox.exec();
 }
 
 AirportDialog::AirportDialog(QWidget *parent, eModes mode, Airport* airport) :
